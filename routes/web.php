@@ -3,6 +3,11 @@
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\PasswordResetController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\Classes\ClassLecturerController;
+use App\Http\Controllers\Classes\ClassScheduleController;
+use App\Http\Controllers\Classes\CourseClassController;
+use App\Http\Controllers\Classes\EnrollmentController;
+use App\Http\Controllers\Classes\MyScheduleController;
 use App\Http\Controllers\MasterData\AcademicYearController;
 use App\Http\Controllers\MasterData\CourseController;
 use App\Http\Controllers\MasterData\FacultyController;
@@ -76,6 +81,29 @@ Route::middleware('auth')->group(function () {
 
         Route::resource('students', StudentController::class);
         Route::resource('lecturers', LecturerController::class);
+    });
+
+    // Kelas & jadwal.
+    // - Admin (superadmin/admin_academic): kelola penuh.
+    // - Dosen/mahasiswa: baca kelasnya + jadwalnya (di-scope di controller + policy).
+    Route::middleware('role:superadmin,admin_academic,lecturer,student')->group(function () {
+        Route::resource('classes', CourseClassController::class)->parameters(['classes' => 'courseClass']);
+
+        Route::get('classes/{courseClass}/lecturers', [ClassLecturerController::class, 'index'])->name('classes.lecturers.index');
+        Route::post('classes/{courseClass}/lecturers', [ClassLecturerController::class, 'store'])->name('classes.lecturers.store');
+        Route::delete('classes/{courseClass}/lecturers/{lecturer}', [ClassLecturerController::class, 'destroy'])->name('classes.lecturers.destroy');
+
+        Route::get('classes/{courseClass}/enrollments', [EnrollmentController::class, 'index'])->name('classes.enrollments.index');
+        Route::get('classes/{courseClass}/enrollments/add', [EnrollmentController::class, 'candidates'])->name('classes.enrollments.candidates');
+        Route::post('classes/{courseClass}/enrollments', [EnrollmentController::class, 'store'])->name('classes.enrollments.store');
+        Route::delete('classes/{courseClass}/enrollments/{enrollment}', [EnrollmentController::class, 'destroy'])->name('classes.enrollments.destroy');
+
+        Route::get('classes/{courseClass}/schedules', [ClassScheduleController::class, 'index'])->name('classes.schedules.index');
+        Route::post('classes/{courseClass}/schedules', [ClassScheduleController::class, 'store'])->name('classes.schedules.store');
+        Route::put('classes/{courseClass}/schedules/{schedule}', [ClassScheduleController::class, 'update'])->name('classes.schedules.update');
+        Route::delete('classes/{courseClass}/schedules/{schedule}', [ClassScheduleController::class, 'destroy'])->name('classes.schedules.destroy');
+
+        Route::get('jadwal-saya', [MyScheduleController::class, 'index'])->name('schedules.mine');
     });
 });
 

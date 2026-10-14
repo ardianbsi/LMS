@@ -35,13 +35,19 @@
                 <a href="{{ route('dashboard.lecturer') }}" class="rounded-lg px-3 py-2 hover:bg-slate-100">Area Dosen</a>
                 <a href="{{ route('dashboard.student') }}" class="rounded-lg px-3 py-2 hover:bg-slate-100">Area Mahasiswa</a>
                 <a href="{{ route('master-data.faculties.index') }}" class="rounded-lg px-3 py-2 hover:bg-slate-100">Master Data</a>
+                <a href="{{ route('classes.index') }}" class="rounded-lg px-3 py-2 hover:bg-slate-100">Kelas</a>
             @elseif ($role === 'admin_academic')
                 <a href="{{ route('dashboard.admin-academic') }}" class="rounded-lg px-3 py-2 hover:bg-slate-100">Dashboard Akademik</a>
                 <a href="{{ route('master-data.faculties.index') }}" class="rounded-lg px-3 py-2 hover:bg-slate-100">Master Data</a>
+                <a href="{{ route('classes.index') }}" class="rounded-lg px-3 py-2 hover:bg-slate-100">Kelas</a>
             @elseif ($role === 'lecturer')
                 <a href="{{ route('dashboard.lecturer') }}" class="rounded-lg px-3 py-2 hover:bg-slate-100">Dashboard Dosen</a>
+                <a href="{{ route('classes.index') }}" class="rounded-lg px-3 py-2 hover:bg-slate-100">Kelas Saya</a>
+                <a href="{{ route('schedules.mine') }}" class="rounded-lg px-3 py-2 hover:bg-slate-100">Jadwal Saya</a>
             @elseif ($role === 'student')
                 <a href="{{ route('dashboard.student') }}" class="rounded-lg px-3 py-2 hover:bg-slate-100">Dashboard Mahasiswa</a>
+                <a href="{{ route('classes.index') }}" class="rounded-lg px-3 py-2 hover:bg-slate-100">Kelas Saya</a>
+                <a href="{{ route('schedules.mine') }}" class="rounded-lg px-3 py-2 hover:bg-slate-100">Jadwal Saya</a>
             @endif
         </nav>
     </header>
