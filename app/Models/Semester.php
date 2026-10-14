@@ -33,7 +33,14 @@ class Semester extends Model
 
     public function isReferenced(): bool
     {
-        // Referensi kelas/enrollment ditambah di Fase 3.
-        return false;
+        return $this->classes()->exists();
+    }
+
+    /**
+     * Kelas yang memakai semester ini (Fase 3).
+     */
+    public function classes(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(CourseClass::class);
     }
 }

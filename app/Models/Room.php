@@ -23,7 +23,14 @@ class Room extends Model
 
     public function isReferenced(): bool
     {
-        // Referensi jadwal ditambah di Fase 3.
-        return false;
+        return $this->schedules()->exists();
+    }
+
+    /**
+     * Jadwal yang memakai ruang ini (Fase 3).
+     */
+    public function schedules(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(ClassSchedule::class);
     }
 }

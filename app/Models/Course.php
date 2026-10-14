@@ -29,7 +29,14 @@ class Course extends Model
 
     public function isReferenced(): bool
     {
-        // Referensi course_classes ditambah di Fase 3.
-        return false;
+        return $this->classes()->exists();
+    }
+
+    /**
+     * Kelas yang memakai mata kuliah ini (Fase 3).
+     */
+    public function classes(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(CourseClass::class);
     }
 }
