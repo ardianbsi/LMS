@@ -54,6 +54,9 @@ class AppServiceProvider extends ServiceProvider
         Gate::policy(\App\Models\Room::class, \App\Policies\MasterDataPolicy::class);
         Gate::policy(\App\Models\Student::class, \App\Policies\AcademicProfilePolicy::class);
         Gate::policy(\App\Models\Lecturer::class, \App\Policies\AcademicProfilePolicy::class);
+
+        // Kelas & jadwal: admin kelola penuh; dosen/mahasiswa baca kelasnya via policy.
+        Gate::policy(\App\Models\CourseClass::class, \App\Policies\CourseClassPolicy::class);
     }
 }
 
