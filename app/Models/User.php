@@ -68,5 +68,21 @@ class User extends Authenticatable
     {
         return $this->hasRole(UserRole::Student);
     }
+
+    /**
+     * Profil mahasiswa (satu user satu profil).
+     */
+    public function student(): \Illuminate\Database\Eloquent\Relations\HasOne
+    {
+        return $this->hasOne(Student::class);
+    }
+
+    /**
+     * Profil dosen (satu user satu profil).
+     */
+    public function lecturer(): \Illuminate\Database\Eloquent\Relations\HasOne
+    {
+        return $this->hasOne(Lecturer::class);
+    }
 }
 
