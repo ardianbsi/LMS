@@ -3,10 +3,10 @@
 > AI coding agent: perbarui dokumen ini di akhir setiap fase. Jangan mengklaim pekerjaan selesai tanpa verifikasi.
 
 ## Current status
-- Fase terakhir: Fase 2 — Master Data Akademik
+- Fase terakhir: Fase 3 — Kelas, Dosen Pengampu, Enrollment, Jadwal
 - Status: Complete
 - Tanggal: 2026-10-14 (UTC)
-- Branch: `fase-2-master-data`
+- Branch: `fase-3-kelas-jadwal`
 
 ## Repository baseline
 - Laravel: 13.x (`laravel/framework ^13.17`, skeleton fresh)
@@ -20,7 +20,7 @@
 - [x] Fase 0 — Audit (read-only, tanpa perubahan)
 - [x] Fase 1 — Fondasi/Auth/UI
 - [x] Fase 2 — Master data
-- [ ] Fase 3 — Kelas/Enrollment/Jadwal
+- [x] Fase 3 — Kelas/Enrollment/Jadwal
 - [ ] Fase 4 — Pertemuan/Presensi
 - [ ] Fase 5 — Materi
 - [ ] Fase 6 — Diskusi
@@ -54,6 +54,15 @@
 - Views: `_nav` + 32 view (index/create/edit/show x8) BI responsif + link Master Data di nav admin
 - Tests: `FacultyCrudTest` (6), `MasterDataCrudTest` (4), `AcademicProfileTest` (5) — 15 tests baru
 
+### Fase 3 — Kelas/Enrollment/Jadwal (branch `fase-3-kelas-jadwal`)
+- Migrasi: `2026_10_14_000004_create_class_enrollment_schedule_tables` (course_classes unique MK+semester+kode; class_lecturers + enrollments unique pivot; class_schedules hari+jam+ruang+rentang tanggal)
+- 4 model: CourseClass (displayName, lecturers/students BelongsToMany), ClassLecturer, Enrollment, ClassSchedule (cast DayOfWeek, displayLabel) + enum DayOfWeek + relasi balik Semester/Course/Room + `isReferenced()` kini nyata
+- Service: `ScheduleConflictService` (bentrok ruang/dosen/mahasiswa server-side + pesan jelas nama kelas/waktu/pihak terkait)
+- Policy: `CourseClassPolicy` (admin kelola; dosen/mahasiswa view kelasnya) + 4 Form Requests
+- 5 Controllers: CourseClass (scope role + filter), ClassLecturer (tolak duplikat), Enrollment (tolak duplikat + bentrok mhs), ClassSchedule (tolak bentrok, tidak disimpan), MySchedule (read-only + filter semester/hari)
+- Routes: grup `role:superadmin,admin_academic,lecturer,student` + 9 views (kelas index/create/edit/show, dosen, enrollment, tambah enrollment, jadwal, jadwal-saya) + nav per role
+- Tests: `ScheduleConflictTest` (6), `ClassManagementTest` (8) — 14 tests baru; fix `AcademicYearFactory` unique
+
 
 ## Database changes
 - Migration dibuat: `2026_10_14_000001_add_role_to_users_table` (kolom role default student + index)
@@ -66,6 +75,11 @@
 - Dijalankan pada: sqlite `:memory:` via RefreshDatabase saat test (28 tests lolos termasuk skema + FK + unique)
 - Rollback: `down()` drop tabel urutan terbalik — aman, non-destruktif
 
+### Fase 3
+- Migration dibuat: `2026_10_14_000004_create_class_enrollment_schedule_tables`
+- Dijalankan pada: sqlite `:memory:` via RefreshDatabase (42 tests lolos termasuk skema pivot + unique + FK)
+- Rollback: `down()` drop urutan terbalik — aman, non-destruktif
+
 ## Tests
 - Command: `php artisan test` (JUnit: `storage/logs/fase1-test2.xml`, dibersihkan setelah verifikasi)
 - Hasil aktual: 13 tests, 52 assertions, 0 failures, 0 errors
@@ -77,6 +91,12 @@
 - Hasil aktual: 28 tests, 140 assertions, 0 failures, 0 errors (13 lama + 15 baru)
 - Run pertama 27/28: 1 gagal karena bug `StudyProgramRequest` membaca `route('study_program')` padahal parameter `studyProgram` → unique-ignore gagal; diperbaiki (juga `AcademicYearRequest`), run kedua 100% lulus
 - Cakupan baru: CRUD fakultas/prodi/tahun/semester/MK/ruang, unique constraint (kode/term/NIM/NIP), destroy guard referensi, toggle nonaktif, search/filter, non-admin 403 (7 route x 2 role), mahasiswa baru bisa login
+
+### Fase 3
+- Command: `php artisan test` (JUnit: `storage/logs/fase3-test3.xml`, di-ignore git)
+- Hasil aktual: 42 tests, 179 assertions, 0 failures, 0 errors (28 lama + 14 baru)
+- Run pertama error sintaks (insert tool memotong 2 file test) → diperbaiki manual; run kedua 40/42 (2 error flaky `AcademicYearFactory` duplikat kode tahun) → factory dibuat unique; run ketiga 100% lulus
+- Cakupan baru: bentrok ruang/dosen/mahasiswa + pesan jelas, jadwal bersebelahan/beda-hari/beda-rentang tidak bentrok, enrollment & penugasan duplikat ditolak, jadwal bentrok tidak disimpan, validasi jam, scoping dosen/mahasiswa + 403 lintas kelas, filter semester/hari
 
 ## Decisions
 - Paket A: SQLite dev + role native + Blade manual, tanpa package baru (hindari risiko Laravel 13)
@@ -91,12 +111,18 @@
 - Student/Lecturer destroy menghapus profil + akun user (belum ada enrollment; guard enrollment ditambah Fase 3)
 - `Semester/Course/Room::isReferenced()` return false sementara — diisi referensi nyata di Fase 3
 
+### Fase 3
+- Jadwal konflik tidak disimpan tanpa keputusan eksplisit (sesuai PRD) — belum ada alur override; keputusan override admin ditunda ke Fase 9 (kuliah pengganti)
+- Enrollment menolak bentrok jadwal mahasiswa otomatis (prasyarat "jika jadwal enrollment tersedia" terpenuhi — jadwal selalu tersedia di model ini)
+- Kelas ber-enrollment/ber-jadwal tidak bisa dihapus (nonaktifkan via status); penugasan dosen bisa dilepas kapan saja
+- Dosen/mahasiswa hanya read kelasnya (index di-scope + show 403); tombol kelola disembunyikan via `@can` + policy server-side
+
 ## Known issues / blockers
 - Assets Vite belum di-build — halaman render tanpa CSS/JS sampai `npm run build`
 - Shell integration bermasalah (exit code 1 meski sukses) — diverifikasi via output + JUnit + git log
 - `.env` aktual tidak disentuh; reset email pakai mailer log/array (belum uji kirim asli)
 
 ## Next exact step
-- Fase berikutnya: Fase 3 — Kelas, Dosen Pengampu, Enrollment, Jadwal
-- Task terkecil: migrasi + model `course_classes, class_lecturers, enrollments, class_schedules` + service deteksi bentrok ruang/dosen/mahasiswa (server-side)
-- File PRD: `01_MASTER_SPEC.txt`, `05_FASE_03_KELAS_ENROLLMENT_JADWAL.txt`, `HANDOFF_STATE.md`
+- Fase berikutnya: Fase 4 — Pertemuan, Presensi, Catatan Pengajaran
+- Task terkecil: migrasi + model `meetings, attendance_sessions, attendances` + rekap + koreksi diaudit
+- File PRD: `01_MASTER_SPEC.txt`, `06_FASE_04_PERTEMUAN_PRESENSI.txt`, `HANDOFF_STATE.md`
