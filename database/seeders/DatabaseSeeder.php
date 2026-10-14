@@ -21,5 +21,10 @@ class DatabaseSeeder extends Seeder
             'name' => 'Test User',
             'email' => 'test@example.com',
         ]);
+
+        // Seeder demo HANYA untuk non-production.
+        if (! app()->isProduction()) {
+            $this->call(DemoUsersSeeder::class);
+        }
     }
 }
