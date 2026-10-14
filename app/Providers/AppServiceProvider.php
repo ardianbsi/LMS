@@ -44,6 +44,16 @@ class AppServiceProvider extends ServiceProvider
 
         // Area mahasiswa.
         Gate::define('access-student-area', fn (User $user) => $user->hasRole(UserRole::Student));
+
+        // Master data akademik: admin-only via policy.
+        Gate::policy(\App\Models\Faculty::class, \App\Policies\MasterDataPolicy::class);
+        Gate::policy(\App\Models\StudyProgram::class, \App\Policies\MasterDataPolicy::class);
+        Gate::policy(\App\Models\AcademicYear::class, \App\Policies\MasterDataPolicy::class);
+        Gate::policy(\App\Models\Semester::class, \App\Policies\MasterDataPolicy::class);
+        Gate::policy(\App\Models\Course::class, \App\Policies\MasterDataPolicy::class);
+        Gate::policy(\App\Models\Room::class, \App\Policies\MasterDataPolicy::class);
+        Gate::policy(\App\Models\Student::class, \App\Policies\AcademicProfilePolicy::class);
+        Gate::policy(\App\Models\Lecturer::class, \App\Policies\AcademicProfilePolicy::class);
     }
 }
 
