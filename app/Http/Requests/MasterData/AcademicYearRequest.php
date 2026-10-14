@@ -17,7 +17,7 @@ class AcademicYearRequest extends FormRequest
      */
     public function rules(): array
     {
-        $id = $this->route('academic_year')?->id;
+        $id = $this->route('academicYear')?->id ?? $this->route('academic_year')?->id;
 
         return [
             'code' => ['required', 'string', 'max:16', Rule::unique('academic_years', 'code')->ignore($id)],

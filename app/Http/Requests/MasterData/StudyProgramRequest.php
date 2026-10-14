@@ -17,7 +17,7 @@ class StudyProgramRequest extends FormRequest
      */
     public function rules(): array
     {
-        $programId = $this->route('study_program')?->id ?? $this->route('program')?->id;
+        $programId = $this->route('studyProgram')?->id ?? $this->route('study_program')?->id ?? $this->route('program')?->id;
 
         return [
             'faculty_id' => ['required', 'integer', 'exists:faculties,id'],
