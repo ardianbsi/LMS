@@ -1,0 +1,36 @@
+FASE 4 — PERTEMUAN, PRESENSI, DAN CATATAN PENGAJARAN
+
+PRASYARAT
+Fase 3 selesai dan kelas/jadwal tersedia.
+
+SCOPE
+- meetings: pertemuan bernomor dalam kelas.
+- attendance_sessions: sesi presensi per pertemuan.
+- attendances: status kehadiran mahasiswa.
+- teaching_records atau kolom catatan pertemuan untuk topik/rangkuman.
+- Dosen dapat membuat/mengedit pertemuan dalam kelas yang ditugaskan.
+- Dosen membuka/menutup sesi presensi.
+- Mahasiswa melakukan presensi ketika eligible.
+- Rekap per kelas, pertemuan, mahasiswa, dan semester.
+- Koreksi presensi oleh role berwenang dengan alasan dan audit.
+
+ATURAN
+- Nomor pertemuan unik per kelas.
+- Presensi hanya jika enrollment aktif dan sesi terbuka.
+- Gunakan waktu server.
+- Status awal: present, late, excused, sick, absent; sesuaikan kebijakan institusi.
+- Satu attendance per student per session.
+- Sesi tertutup menolak presensi baru.
+- Perubahan status harus mencatat actor, waktu, alasan.
+- Jangan mengandalkan IP/GPS sebagai bukti tunggal kehadiran.
+
+ACCEPTANCE CRITERIA
+- Dosen membuat pertemuan dan membuka/menutup presensi.
+- Mahasiswa eligible dapat presensi.
+- Non-enrolled atau sesi tutup ditolak.
+- Duplikasi ditolak/idempotent.
+- Koreksi tercatat dalam audit.
+- Rekap sesuai database dan permission.
+
+PROMPT MULAI
+Baca master spec, permission matrix jika tersedia, HANDOFF_STATE.md, dan file Fase 4. Implementasikan pertemuan dan presensi saja. Tambahkan test untuk akses lintas kelas, sesi tertutup, enrollment, duplikasi, dan koreksi.

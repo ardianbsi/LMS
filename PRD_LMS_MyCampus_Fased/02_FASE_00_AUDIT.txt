@@ -1,0 +1,30 @@
+FASE 0 — AUDIT REPOSITORY (JANGAN CODING)
+
+TUJUAN
+Memahami kondisi project sebelum melakukan perubahan.
+
+TUGAS
+1. Periksa versi Laravel, PHP, Composer, Node, package manager, database driver, dan test framework.
+2. Petakan struktur folder dan arsitektur saat ini.
+3. Identifikasi autentikasi, role/permission, layout UI, migration, model, route, controller, service, dan test yang sudah tersedia.
+4. Bandingkan kondisi repository dengan 01_MASTER_SPEC.txt.
+5. Identifikasi risiko kompatibilitas Laravel 13, khususnya package UI/auth/permission.
+6. Berikan rencana implementasi fase berikutnya dalam urutan dependency.
+7. Jangan ubah file, install dependency, ubah .env, atau jalankan migration.
+
+OUTPUT WAJIB
+- Ringkasan kondisi.
+- Daftar fitur sudah ada / belum ada / perlu verifikasi.
+- Daftar file penting.
+- Risiko teknis.
+- Rencana kerja fase 1.
+- Usulan keputusan yang membutuhkan persetujuan.
+
+ACCEPTANCE CRITERIA
+- Tidak ada file berubah.
+- Tidak ada dependency dipasang.
+- Tidak ada migrasi dijalankan.
+- Semua kesimpulan berdasarkan repository yang benar-benar diperiksa.
+
+PROMPT MULAI
+Baca 00_PETUNJUK_UMUM.txt dan 01_MASTER_SPEC.txt. Kerjakan Fase 0 sesuai file ini. Audit saja; jangan melakukan perubahan. Akhiri dengan rekomendasi implementasi Fase 1.

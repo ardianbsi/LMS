@@ -1,0 +1,30 @@
+FASE 6 — FORUM DISKUSI
+
+PRASYARAT
+Kelas dan authorization tersedia; pertemuan idealnya sudah ada.
+
+SCOPE
+- discussion_threads terhubung ke meeting.
+- discussion_posts untuk balasan.
+- Pengguna terdaftar dapat membuat thread/post sesuai kebijakan.
+- Dosen dapat moderasi thread pada kelasnya.
+- Status minimal: visible/hidden atau active/removed.
+- Catat pembuat dan waktu.
+- UI daftar thread, detail, reply, pagination.
+
+KEAMANAN
+- Escape output untuk mencegah XSS.
+- Batasi panjang judul dan body.
+- Validasi kepemilikan kelas.
+- Jangan izinkan pengguna non-enrolled membaca diskusi privat.
+- Edit/hapus dibatasi oleh pembuat dan role moderasi.
+
+ACCEPTANCE CRITERIA
+- Thread dan reply dapat dibuat.
+- Pengguna di luar kelas ditolak.
+- Konten aman dirender.
+- Pagination berfungsi.
+- Test authorization dan validasi lulus.
+
+PROMPT MULAI
+Baca master spec, HANDOFF_STATE.md, dan file Fase 6. Implementasikan forum diskusi minimal saja. Jangan menambah chat realtime. Jalankan test authorization dan XSS-safe rendering.

@@ -1,0 +1,35 @@
+FASE 7 — TUGAS, PENGUMPULAN, PENILAIAN
+
+PRASYARAT
+Meetings, users, enrollments, dan private storage tersedia.
+
+SCOPE
+- assignments: judul, instruksi, meeting, opens_at, due_at, submission_type, max_score, allow_late_submission, publikasi.
+- submissions: mahasiswa, konten teks/URL bila diizinkan, waktu kirim, status terlambat, versi.
+- submission_files: file privat.
+- grades: score, feedback, grader, waktu penilaian, publikasi nilai.
+- Dosen melihat submission kelasnya dan menilai.
+- Mahasiswa melihat submission sendiri dan nilai setelah publikasi.
+
+ATURAN
+- Mahasiswa hanya dapat submit jika terdaftar pada kelas.
+- Validasi jenis submission dan file.
+- Default MVP: satu submission aktif per tugas/mahasiswa; jika mendukung revisi, simpan versi dengan benar.
+- Waktu server menentukan keterlambatan.
+- Perilaku late submission harus configurable.
+- Score >= 0 dan <= max_score.
+- Nilai tersembunyi sampai published_at terisi.
+- Perubahan nilai setelah publikasi diaudit.
+- Mahasiswa tidak dapat melihat submission mahasiswa lain.
+
+ACCEPTANCE CRITERIA
+- Dosen membuat dan mempublikasikan tugas.
+- Mahasiswa mengumpulkan jawaban.
+- Sistem mencatat waktu dan status terlambat.
+- Dosen memberi nilai dan feedback.
+- Mahasiswa hanya melihat nilai yang sudah dipublikasikan.
+- File submission privat.
+- Test akses lintas pengguna, deadline, file, scoring, dan publikasi lulus.
+
+PROMPT MULAI
+Baca master spec, HANDOFF_STATE.md, dan file Fase 7. Implementasikan tugas, submission, dan penilaian saja. Jangan membuat ujian online. Tambahkan feature tests dari pembuatan tugas sampai publikasi nilai.

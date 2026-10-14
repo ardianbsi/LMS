@@ -1,0 +1,24 @@
+PROMPT LANJUTAN ANTAR-FASE
+
+Baca:
+1. 00_PETUNJUK_UMUM.txt
+2. 01_MASTER_SPEC.txt
+3. HANDOFF_STATE.md
+4. File fase berikutnya yang disebutkan pengguna.
+
+Gunakan repository saat ini sebagai sumber kebenaran implementasi. Jangan mengasumsikan fase sebelumnya sukses hanya karena checklist ditandai. Periksa file, migration, dan test yang benar-benar ada.
+
+Kerjakan hanya fase yang diminta. Sebelum coding:
+- Ringkas status dari HANDOFF_STATE.md.
+- Sebutkan acceptance criteria fase.
+- Sebutkan file yang diperkirakan berubah.
+- Identifikasi blocker atau konflik.
+
+Sesudah coding:
+- Jalankan test relevan.
+- Laporkan command dan hasil sebenarnya.
+- Laporkan file yang berubah.
+- Update HANDOFF_STATE.md.
+- Jangan otomatis memulai fase selanjutnya.
+
+Fase yang ingin dikerjakan: [ISI NOMOR DAN NAMA FASE]

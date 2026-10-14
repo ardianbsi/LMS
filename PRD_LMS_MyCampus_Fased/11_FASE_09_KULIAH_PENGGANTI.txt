@@ -1,0 +1,25 @@
+FASE 9 — PENGAJUAN DAN PERSETUJUAN KULIAH PENGGANTI
+
+PRASYARAT
+Kelas, jadwal, dosen, ruang, dan authorization tersedia.
+
+SCOPE
+- Dosen mengajukan jadwal pengganti untuk kelas yang ditugaskan.
+- Form: kelas, tanggal usulan, jam mulai/selesai, ruang opsional, alasan, catatan.
+- Admin akademik meninjau dan approve/reject.
+- Status: submitted, approved, rejected, cancelled.
+- Simpan reviewer, reviewed_at, review_note.
+- Validasi bentrok dosen, ruang, dan jadwal kelas.
+- Status dan keputusan terlihat oleh pemohon.
+- Catat audit dan notifikasi bila kanal tersedia.
+
+ACCEPTANCE CRITERIA
+- Dosen hanya dapat mengajukan untuk kelasnya.
+- Admin berwenang dapat menyetujui/menolak.
+- Jadwal konflik ditolak atau memerlukan resolusi eksplisit.
+- Pemohon tidak dapat menyetujui permohonannya sendiri kecuali kebijakan eksplisit membolehkan.
+- Keputusan dan perubahan tercatat di audit.
+- Test workflow lengkap lulus.
+
+PROMPT MULAI
+Baca master spec, HANDOFF_STATE.md, dan file Fase 9. Implementasikan workflow kuliah pengganti saja. Gunakan service validasi jadwal yang sudah ada; jangan menduplikasi logika bentrok.

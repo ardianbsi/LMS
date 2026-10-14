@@ -1,0 +1,32 @@
+FASE 5 — MATERI DAN VIDEO/LINK PEMBELAJARAN
+
+PRASYARAT
+Fase 4 selesai atau model meetings sudah stabil.
+
+SCOPE
+- Materi terhubung ke meeting.
+- Tipe: file upload atau tautan eksternal.
+- Metadata: judul, deskripsi, pemilik, ukuran, MIME, status publikasi.
+- Dosen mengunggah/mengubah materi untuk kelas yang ditugaskan.
+- Mahasiswa melihat materi kelas yang diikutinya.
+- Authorized download melalui controller.
+
+KEAMANAN FILE
+- Gunakan private disk.
+- Jangan menyimpan file privat di public storage.
+- Validasi MIME type, ekstensi, ukuran, dan nama.
+- Nama storage dibuat acak.
+- Download wajib memeriksa enrollment/penugasan dan status publikasi.
+- Jangan menerima file executable.
+- Jangan menampilkan path filesystem kepada pengguna.
+
+ACCEPTANCE CRITERIA
+- Dosen dapat mengunggah dan mempublikasikan materi.
+- Mahasiswa kelas terkait dapat mengakses materi.
+- Mahasiswa kelas lain ditolak.
+- File berbahaya/tidak sesuai aturan ditolak.
+- Link eksternal divalidasi skemanya.
+- Test akses file privat lulus.
+
+PROMPT MULAI
+Baca master spec, HANDOFF_STATE.md, dan file Fase 5. Implementasikan modul materi saja. Prioritaskan private storage dan authorization download. Jalankan test upload, validasi, publikasi, dan akses lintas kelas.

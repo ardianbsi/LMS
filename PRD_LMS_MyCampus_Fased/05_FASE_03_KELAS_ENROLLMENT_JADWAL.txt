@@ -1,0 +1,33 @@
+FASE 3 — KELAS, DOSEN PENGAMPU, ENROLLMENT, DAN JADWAL
+
+PRASYARAT
+Fase 2 selesai dan master data tersedia.
+
+SCOPE
+- course_classes: mata kuliah pada semester dan kelas tertentu.
+- class_lecturers: dosen yang ditugaskan pada kelas.
+- enrollments: mahasiswa terdaftar pada kelas.
+- class_schedules: hari, waktu mulai/selesai, ruang, rentang tanggal opsional.
+- UI admin untuk membuat kelas, menetapkan dosen, memasukkan mahasiswa, dan mengatur jadwal.
+- Tampilan jadwal dosen dan mahasiswa read-only.
+
+ATURAN
+- Enrollment unik per kelas dan mahasiswa.
+- Penugasan dosen tidak boleh duplikat.
+- Waktu selesai harus setelah waktu mulai.
+- Deteksi bentrok ruang dan dosen untuk rentang jadwal yang bertumpuk.
+- Deteksi bentrok mahasiswa jika jadwal enrollment tersedia.
+- Validasi bentrok harus ada di service server-side, bukan UI saja.
+- Jelaskan bentrok dengan nama kelas, waktu, dosen/ruang terkait.
+- Jangan menyimpan jadwal yang konflik tanpa keputusan eksplisit sesuai policy.
+
+ACCEPTANCE CRITERIA
+- Admin dapat membuat kelas, menetapkan dosen, enrollment, dan jadwal.
+- Dosen melihat hanya kelas yang ditugaskan.
+- Mahasiswa melihat hanya kelas yang diikutinya.
+- Enrollment duplikat ditolak.
+- Bentrok jadwal diuji dengan test.
+- Filter semester dan hari bekerja.
+
+PROMPT MULAI
+Baca master spec, HANDOFF_STATE.md, dan file Fase 3. Implementasikan kelas, dosen pengampu, enrollment, dan jadwal saja. Periksa authorization dan deteksi bentrok di server. Jalankan test dan update handoff.

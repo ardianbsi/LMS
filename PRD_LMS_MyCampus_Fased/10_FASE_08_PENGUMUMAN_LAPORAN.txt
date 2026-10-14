@@ -1,0 +1,31 @@
+FASE 8 — PENGUMUMAN DAN LAPORAN
+
+PRASYARAT
+Master data, kelas, presensi, tugas, dan penilaian yang dibutuhkan telah tersedia.
+
+SCOPE PENGUMUMAN
+- Admin membuat pengumuman institusi/semester/program studi sesuai desain target audience.
+- Dosen membuat pengumuman untuk kelas yang ditugaskan.
+- Pengumuman memiliki judul, isi, periode aktif, status draft/published.
+- Pengguna hanya melihat pengumuman untuk audiensnya.
+
+SCOPE LAPORAN
+- Rekap presensi per mahasiswa, kelas, pertemuan, semester.
+- Rekap status tugas/submission.
+- Rekap nilai yang boleh dilihat role tersebut.
+- Filter semester, program studi, kelas, dosen.
+- Pagination.
+- CSV export sebagai format awal.
+- Export wajib menerapkan permission yang sama dengan tampilan.
+
+ACCEPTANCE CRITERIA
+- Target audience pengumuman berjalan.
+- Pengguna tidak melihat pengumuman di luar scope.
+- Laporan sesuai filter.
+- Dosen tidak melihat data kelas lain.
+- Mahasiswa hanya melihat data sendiri.
+- CSV tidak membocorkan data yang tidak diizinkan.
+- Test filter, authorization, dan export lulus.
+
+PROMPT MULAI
+Baca master spec, HANDOFF_STATE.md, dan file Fase 8. Implementasikan pengumuman dan laporan dasar dengan CSV export. Pastikan semua filter dan export mematuhi permission.

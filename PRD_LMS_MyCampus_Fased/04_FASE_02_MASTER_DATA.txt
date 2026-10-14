@@ -1,0 +1,40 @@
+FASE 2 — MASTER DATA AKADEMIK
+
+PRASYARAT
+Fase 1 selesai; auth dan authorization sudah diuji.
+
+SCOPE
+- Fakultas.
+- Program studi.
+- Tahun akademik.
+- Semester.
+- Mata kuliah.
+- Ruang.
+- Profil mahasiswa.
+- Profil dosen.
+
+MODEL DATA
+Gunakan users sebagai akun login; students dan lecturers sebagai profil terkait users. Hindari menduplikasi nama/email tanpa kebutuhan. NIM dan NIP harus unique sesuai aturan.
+- semesters: terkait academic_year, memiliki term_code dan rentang tanggal.
+- courses: kode unik, nama, SKS/credits, deskripsi opsional.
+- rooms: kode unik dalam lingkup kampus bila multi-campus diaktifkan.
+- Semua entitas memiliki status aktif/nonaktif sesuai kebutuhan.
+
+UI
+- CRUD dengan search, filter, pagination.
+- Validasi server-side.
+- Konfirmasi penghapusan/nonaktif.
+- Jangan hapus data akademik yang sudah direferensikan; gunakan nonaktif/arsip.
+
+ACCEPTANCE CRITERIA
+- Admin yang berwenang dapat membuat, melihat, mengubah, dan menonaktifkan master data.
+- User non-admin ditolak dari CRUD admin.
+- Unique constraint diuji.
+- Relasi dan foreign key konsisten.
+- Test CRUD dan authorization lulus.
+
+BATAS
+Jangan implementasikan kelas/enrollment/jadwal pada fase ini kecuali perlu stub minimal yang disetujui.
+
+PROMPT MULAI
+Baca master spec, hasil audit, HANDOFF_STATE.md, dan file Fase 2 ini. Implementasikan hanya master data akademik. Laporkan migration, UI, tests, dan sisa pekerjaan.

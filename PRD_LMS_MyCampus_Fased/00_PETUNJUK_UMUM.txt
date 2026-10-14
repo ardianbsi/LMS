@@ -1,0 +1,43 @@
+PAKET PRD BERTAHAP — MYCAMPUS LMS
+Target: Laravel 13 + PostgreSQL + Blade/Livewire
+Tujuan: memecah pekerjaan menjadi fase kecil agar AI coding agent dapat menyelesaikan, menguji, dan melanjutkan pekerjaan dengan konteks yang terjaga.
+
+ATURAN PENTING UNTUK AI CODING AGENT
+1. Kerjakan hanya fase yang diminta pengguna. Jangan otomatis lanjut ke fase berikutnya.
+2. Sebelum coding, baca 00_PETUNJUK_UMUM.txt, 01_MASTER_SPEC.txt, file fase yang diminta, serta HANDOFF_STATE.md jika ada.
+3. Audit repository terlebih dahulu. Jangan menimpa implementasi yang sudah ada tanpa persetujuan.
+4. Satu fase boleh dipecah menjadi subtask kecil. Jangan mengerjakan semua modul dalam satu prompt.
+5. Jangan mengubah .env, menjalankan migrasi destruktif, menghapus data, atau mengganti dependency utama tanpa izin eksplisit.
+6. Jalankan test yang relevan. Jangan mengklaim test lulus jika tidak dijalankan.
+7. Akhir fase, buat/update HANDOFF_STATE.md berisi: status, perubahan file, migrasi, test dan hasil nyata, keputusan, known issues, serta langkah berikutnya.
+8. Jangan memalsukan hasil test, status implementasi, atau dokumentasi fitur.
+9. Jika ada konflik antara repository dan PRD, laporkan dan usulkan keputusan; jangan membuat perubahan besar diam-diam.
+10. Semua authorization wajib server-side. Uji akses lintas role dan kepemilikan resource.
+
+CARA MEMAKAI
+- Pilih satu file fase, misalnya 02_FASE_01_FONDASI.txt.
+- Berikan prompt awal di bagian akhir file tersebut kepada AI coding agent.
+- Tunggu implementasi dan laporan.
+- Review diff, jalankan aplikasi/test, lalu minta perbaikan bila perlu.
+- Baru lanjut fase berikutnya setelah acceptance criteria fase saat ini lulus.
+
+URUTAN FASE
+Fase 0: audit repository dan rencana.
+Fase 1: fondasi, autentikasi, role/permission, layout.
+Fase 2: master data akademik.
+Fase 3: kelas, enrollment, jadwal.
+Fase 4: pertemuan dan presensi.
+Fase 5: materi.
+Fase 6: diskusi.
+Fase 7: tugas, submission, penilaian.
+Fase 8: pengumuman dan laporan.
+Fase 9: kuliah pengganti.
+Fase 10: hardening, UAT, deployment.
+
+KEPASTIAN REFERENSI
+[REF-VERIFIED] Fitur yang teridentifikasi dari halaman/panduan publik MyBest: login NIP/NIM, jadwal/perkuliahan, presensi/rekap kehadiran, materi/video, tugas, diskusi, penilaian/komentar, dan pengajuan perkuliahan pengganti. Detail dapat berubah dan dokumen panduan yang tersedia mungkin lama.
+[NEEDS-VALIDATION] Rincian UI, status, dan aturan operasional yang belum dikonfirmasi pada situs saat ini.
+[RECOMMENDED] Fitur yang dirancang untuk aplikasi baru, bukan klaim bahwa fitur tersebut tersedia persis di MyBest.
+
+PRODUK
+Nama kerja: MyCampus LMS. LMS kampus untuk satu institusi pada rilis awal, dengan struktur yang dapat diperluas. Ini adalah aplikasi baru yang terinspirasi alur umum LMS, bukan salinan kode atau database internal MyBest.

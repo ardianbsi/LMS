@@ -1,0 +1,36 @@
+FASE 1 — FONDASI, AUTENTIKASI, ROLE/PERMISSION, DAN LAYOUT
+
+PRASYARAT
+Fase 0 selesai dan rencana diterima.
+
+SCOPE
+1. Siapkan konfigurasi dasar yang diperlukan tanpa menimpa konfigurasi project yang ada.
+2. Implementasikan atau rapikan login/logout/reset password sesuai fasilitas yang tersedia.
+3. Buat role awal: superadmin, admin_academic, lecturer, student.
+4. Implementasikan authorization server-side melalui Policies/Gates dan middleware.
+5. Buat layout responsif dan navigasi berbeda untuk setiap role.
+6. Buat dashboard placeholder per role.
+7. Buat seeder demo yang jelas hanya untuk development/testing.
+8. Tambahkan tests autentikasi, akses dashboard, dan penolakan akses tanpa izin.
+9. Dokumentasikan pilihan package dan kompatibilitasnya.
+
+JANGAN
+- Membuat master data akademik.
+- Membuat semua menu dengan CRUD dummy.
+- Menyimpan password plaintext.
+- Menganggap menyembunyikan menu sebagai authorization.
+- Mengubah database production.
+
+ACCEPTANCE CRITERIA
+- Login dan logout bekerja.
+- Reset password diuji jika mail/test setup tersedia; jika belum, dokumentasikan blocker.
+- Role tidak bisa mengakses dashboard role lain bila tidak diizinkan.
+- Route sensitif dilindungi.
+- Navigasi responsif.
+- Test dijalankan dan hasil dicatat.
+
+HANDOFF
+Perbarui HANDOFF_STATE.md dengan status, file, tests, dan keputusan.
+
+PROMPT MULAI
+Baca 00_PETUNJUK_UMUM.txt, 01_MASTER_SPEC.txt, dan hasil audit Fase 0. Implementasikan Fase 1 saja. Sebelum coding, ringkas file yang akan diubah. Setelah selesai jalankan test relevan dan perbarui HANDOFF_STATE.md.

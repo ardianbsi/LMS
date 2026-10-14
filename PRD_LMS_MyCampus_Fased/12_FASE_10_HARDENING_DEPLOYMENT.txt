@@ -1,0 +1,28 @@
+FASE 10 — HARDENING, UAT, DAN DEPLOYMENT
+
+PRASYARAT
+Semua fase MVP yang dipilih telah selesai.
+
+SCOPE
+1. Jalankan seluruh test suite.
+2. Audit authorization untuk setiap route/resource.
+3. Uji IDOR, akses file privat, XSS, CSRF, validasi, rate limiting, mass assignment, dan kebocoran export.
+4. Tinjau query N+1, pagination, indeks, transaksi database.
+5. Pastikan audit log tidak berisi password/token/secret.
+6. Dokumentasikan backup dan uji restore pada staging.
+7. Siapkan deployment runbook: env, build assets, migration, cache, queue worker, scheduler, permissions.
+8. Pastikan APP_DEBUG=false, HTTPS, secret aman, dan least privilege.
+9. Jalankan UAT dengan akun demo tiap role.
+10. Catat known issues dan rencana pascarilis.
+
+ACCEPTANCE CRITERIA
+- Seluruh test utama lulus atau blocker dijelaskan dengan bukti.
+- Tidak ada akses lintas kelas yang diketahui.
+- File privat tidak dapat diakses tanpa authorization.
+- Backup dapat dipulihkan di staging.
+- README setup lokal dan deployment tersedia.
+- Tidak ada secret yang masuk repository.
+- Semua isu yang belum selesai tercatat.
+
+PROMPT MULAI
+Baca master spec, HANDOFF_STATE.md, dan file Fase 10. Lakukan hardening dan validasi; jangan menambahkan fitur baru. Jalankan test yang tersedia dan laporkan hasil nyata, risiko tersisa, serta rekomendasi go/no-go untuk deployment.

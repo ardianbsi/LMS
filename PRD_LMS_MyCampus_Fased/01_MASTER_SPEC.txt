@@ -1,0 +1,61 @@
+MASTER SPECIFICATION — MYCAMPUS LMS
+
+1. TUJUAN
+Membangun LMS berbasis web untuk mengelola data akademik, kelas, jadwal, pertemuan, presensi, materi, diskusi, tugas, submission, nilai, pengumuman, kuliah pengganti, dan laporan.
+
+2. BASELINE TEKNOLOGI
+- Laravel 13.
+- PostgreSQL.
+- Blade + Livewire, dengan kompatibilitas paket diverifikasi sebelum instalasi.
+- Session authentication untuk aplikasi web.
+- Laravel Policies/Gates untuk authorization.
+- Private storage untuk dokumen terbatas.
+- Automated tests menggunakan framework yang tersedia di repository.
+- Bahasa antarmuka Indonesia; timezone konfigurasi awal Asia/Jakarta.
+- Tema admin Matrix Admin hanya bila template/aset tersedia dan lisensinya sesuai; jika tidak, buat dashboard orisinal dengan pola admin modern.
+
+3. PERAN
+- superadmin: konfigurasi, akun, role/permission, audit.
+- admin_academic: master akademik, kelas, jadwal, enrollment, laporan sesuai scope.
+- lecturer: kelas yang ditugaskan, pertemuan, materi, presensi, diskusi, tugas, penilaian.
+- student: kelas terdaftar, jadwal, presensi diri, materi, diskusi, submission, nilai terpublikasi.
+
+4. MODUL PRODUK
+A. Autentikasi dan akses.
+B. Master data akademik.
+C. Kelas, dosen pengampu, enrollment, jadwal.
+D. Pertemuan dan presensi.
+E. Materi.
+F. Diskusi.
+G. Tugas, submission, penilaian.
+H. Pengumuman dan laporan.
+I. Kuliah pengganti.
+J. Hardening dan deployment.
+
+5. KEBIJAKAN UMUM
+- Default deny untuk akses yang tidak didefinisikan.
+- Mahasiswa hanya melihat kelas yang diikuti.
+- Dosen hanya mengelola kelas yang ditugaskan.
+- Nilai tidak terlihat sebelum dipublikasikan.
+- Koreksi presensi/nilai dan perubahan role/jadwal harus diaudit.
+- File privat diunduh melalui endpoint yang melakukan authorization.
+- Validasi penting dilakukan di server.
+- Hindari controller gemuk; gunakan Form Request, Policy, service/action sesuai kebutuhan.
+- Pagination, filter, dan eager loading untuk daftar besar.
+- Jangan mengimplementasikan ujian online pada MVP.
+
+6. ENTITAS UTAMA
+users, roles/permissions, campuses (opsional), faculties, study_programs, students, lecturers, academic_years, semesters, courses, rooms, course_classes, class_lecturers, enrollments, class_schedules, meetings, attendance_sessions, attendances, materials, assignments, submissions, submission_files, grades, discussion_threads, discussion_posts, announcements, replacement_requests, audit_logs, notifications.
+
+7. DEFINISI SELESAI UMUM
+Sebuah fase dianggap selesai hanya jika:
+- Semua acceptance criteria fase terpenuhi.
+- Migration dapat dijalankan pada lingkungan development yang disetujui.
+- Validasi dan authorization server-side diterapkan.
+- Test relevan dijalankan dan hasil sebenarnya dilaporkan.
+- UI memiliki loading/empty/error state yang layak.
+- Tidak ada perubahan tidak terkait yang tertinggal.
+- HANDOFF_STATE.md diperbarui.
+
+8. DI LUAR MVP
+Ujian online dengan timer/bank soal, video conference, SSO, integrasi SIAKAD, mobile native, proctoring AI, dan pembayaran. Fitur dapat direncanakan setelah MVP stabil.
