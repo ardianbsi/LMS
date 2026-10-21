@@ -77,6 +77,7 @@ class CourseClassController extends Controller
             'schedules.room',
             'classLecturers.lecturer.user',
             'enrollments.student.user',
+            'meetings',
         ]);
 
         return view('classes.show', compact('courseClass'));

@@ -63,6 +63,18 @@
 - Routes: grup `role:superadmin,admin_academic,lecturer,student` + 9 views (kelas index/create/edit/show, dosen, enrollment, tambah enrollment, jadwal, jadwal-saya) + nav per role
 - Tests: `ScheduleConflictTest` (6), `ClassManagementTest` (8) — 14 tests baru; fix `AcademicYearFactory` unique
 
+### Fase 4 — Rekap Presensi Semester (lanjutan, branch `fase-3-kelas-jadwal`)
+- Controller: `app/Http/Controllers/Meetings/SemesterAttendanceRecapController.php` — `index()` (daftar semester) + `show()` (rekap per kelas & per mahasiswa)
+- Cakupan data: admin akademik/superadmin → seluruh kelas semester tersebut; dosen → hanya kelas yang ia ampu (`class_lecturers`); mahasiswa → 403 via Gate `view-semester-attendance-recap`
+- Agregasi: hanya enrollment `status = aktif`; bucket `hadir/terlambat/izin/sakit/alpa/belum`; `hadir` = hadir + terlambat (`AttendanceStatus::countsAsPresent()`)
+- Pertemuan tanpa catatan presensi dihitung sebagai `belum`
+- Persentase kelas = jumlah record hadir ÷ (jumlah mahasiswa × jumlah pertemuan) — selalu 0–100%, konsisten dengan baris mahasiswa
+- Persentase mahasiswa = jumlah record hadir ÷ jumlah pertemuan
+- Optimasi: `scopedClasses()` dipakai bersama oleh `index()` (filter semester via `whereIn` + `distinct`) dan `show()`
+- Routes: `attendance.recap.semesters` (GET `semesters/attendance-recap`), `attendance.recap.semester` (GET `semesters/{semester}/attendance-recap`) di grup `role:superadmin,admin_academic,lecturer`
+- Views: `meetings/recap-semester-index`, `meetings/recap-semester` (kartu ringkasan, tabel per kelas, tabel per mahasiswa) + link nav "Rekap Semester" untuk admin & dosen
+- Tests: `tests/Feature/SemesterAttendanceRecapTest.php` (8 tests) — 403 mahasiswa, akses admin/dosen, scoping kelas dosen, agregasi status, persentase kelas ≤100% dengan banyak mahasiswa, mahasiswa tanpa catatan = belum, persentase memakai potensi mahasiswa×pertemuan, enrollment nonaktif tidak dihitung
+
 
 ## Database changes
 - Migration dibuat: `2026_10_14_000001_add_role_to_users_table` (kolom role default student + index)
@@ -98,6 +110,13 @@
 - Run pertama error sintaks (insert tool memotong 2 file test) → diperbaiki manual; run kedua 40/42 (2 error flaky `AcademicYearFactory` duplikat kode tahun) → factory dibuat unique; run ketiga 100% lulus
 - Cakupan baru: bentrok ruang/dosen/mahasiswa + pesan jelas, jadwal bersebelahan/beda-hari/beda-rentang tidak bentrok, enrollment & penugasan duplikat ditolak, jadwal bentrok tidak disimpan, validasi jam, scoping dosen/mahasiswa + 403 lintas kelas, filter semester/hari
 
+### Fase 4 (rekap presensi semester)
+- Command: `php artisan test --filter=SemesterAttendanceRecapTest` dan `php artisan test`
+- Hasil aktual (terakhir): **77 tests, 265 assertions, 0 failures, 0 errors** — 42 lama (Fase 1–3) + 35 baru (Fase 4 attendance + rekap)
+- Fokus rekap: 8 tests, 22 assertions, 0 failures
+- Run pertama gagal karena helper test membuat `Meeting` baru untuk setiap catatan (duplikat `meeting_number` per kelas) → helper diubah ke `firstOrCreate` per nomor pertemuan
+- Cakupan: otorisasi (mahasiswa 403, admin/dosen 200), scoping dosen hanya kelasnya, agregasi bucket status, persentase kelas ≤ 100% pada multi-mahasiswa, catatan kosong = `belum`, denominator = mahasiswa × pertemuan, enrollment nonaktif tidak masuk rekap
+
 ## Decisions
 - Paket A: SQLite dev + role native + Blade manual, tanpa package baru (hindari risiko Laravel 13)
 - `laravel/boost --dev` belum diinstall (butuh izin eksplisit install dependency)
@@ -116,6 +135,13 @@
 - Enrollment menolak bentrok jadwal mahasiswa otomatis (prasyarat "jika jadwal enrollment tersedia" terpenuhi — jadwal selalu tersedia di model ini)
 - Kelas ber-enrollment/ber-jadwal tidak bisa dihapus (nonaktifkan via status); penugasan dosen bisa dilepas kapan saja
 - Dosen/mahasiswa hanya read kelasnya (index di-scope + show 403); tombol kelola disembunyikan via `@can` + policy server-side
+
+### Fase 4
+- **Persentase kehadiran kelas memakai denominator `mahasiswa × pertemuan` (potensi), bukan jumlah catatan yang tercatat.** Alasannya: (1) tidak bisa melebihi 100%, (2) konsisten dengan baris per mahasiswa, (3) pertemuan tanpa catatan tetap dihitung sebagai `belum` di kolom rekap. Konsekuensinya, kelas dengan catatan presensi yang belum lengkap akan terlihat memiliki persentase lebih rendah — ini memang nilai "kehadiran aktual" yang berguna untuk monitoring.
+- Presensi kosong (pertemuan tanpa catatan) masuk bucket `belum`, bukan `alpa` — `alpa` hanya dari status eksplisit `absent`
+- Rekap hanya menghitung enrollment `aktif`; mahasiswa nonaktif/cuti tidak memengaruhi persentase kelas
+- Dosen yang tidak punya kelas pada semester tersebut melihat daftar kelas kosong (bukan 403) — 403 hanya untuk role yang tidak berhak (mahasiswa)
+- Rekap menampilkan data semester yang ada kelasnya saja (query di-scope ke kelas milik user), sehingga admin melihat daftar semester yang relevan
 
 ## Known issues / blockers
 - Assets Vite belum di-build — halaman render tanpa CSS/JS sampai `npm run build`

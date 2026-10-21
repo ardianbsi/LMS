@@ -16,6 +16,10 @@ use App\Http\Controllers\MasterData\RoomController;
 use App\Http\Controllers\MasterData\SemesterController;
 use App\Http\Controllers\MasterData\StudentController;
 use App\Http\Controllers\MasterData\StudyProgramController;
+use App\Http\Controllers\Meetings\AttendanceRecapController;
+use App\Http\Controllers\Meetings\AttendanceSessionController;
+use App\Http\Controllers\Meetings\MeetingController;
+use App\Http\Controllers\Meetings\SemesterAttendanceRecapController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -104,6 +108,34 @@ Route::middleware('auth')->group(function () {
         Route::delete('classes/{courseClass}/schedules/{schedule}', [ClassScheduleController::class, 'destroy'])->name('classes.schedules.destroy');
 
         Route::get('jadwal-saya', [MyScheduleController::class, 'index'])->name('schedules.mine');
+    });
+
+    // Pertemuan & presensi (Fase 4).
+    // - Admin: kelola penuh + koreksi.
+    // - Dosen: kelola pertemuan & sesi presensi kelas yang ditugaskan.
+    // - Mahasiswa: lihat pertemuan kelasnya & presensi diri saat sesi terbuka.
+    Route::middleware('role:superadmin,admin_academic,lecturer,student')->group(function () {
+        Route::get('classes/{courseClass}/meetings', [MeetingController::class, 'index'])->name('meetings.index');
+        Route::get('classes/{courseClass}/meetings/create', [MeetingController::class, 'create'])->name('meetings.create');
+        Route::post('classes/{courseClass}/meetings', [MeetingController::class, 'store'])->name('meetings.store');
+        Route::get('classes/{courseClass}/meetings/{meeting}', [MeetingController::class, 'show'])->name('meetings.show');
+        Route::get('classes/{courseClass}/meetings/{meeting}/edit', [MeetingController::class, 'edit'])->name('meetings.edit');
+        Route::put('classes/{courseClass}/meetings/{meeting}', [MeetingController::class, 'update'])->name('meetings.update');
+        Route::delete('classes/{courseClass}/meetings/{meeting}', [MeetingController::class, 'destroy'])->name('meetings.destroy');
+
+        Route::get('classes/{courseClass}/meetings/{meeting}/session', [AttendanceSessionController::class, 'show'])->name('meetings.session.show');
+        Route::post('classes/{courseClass}/meetings/{meeting}/session/open', [AttendanceSessionController::class, 'open'])->name('meetings.session.open');
+        Route::post('classes/{courseClass}/meetings/{meeting}/session/close', [AttendanceSessionController::class, 'close'])->name('meetings.session.close');
+        Route::post('classes/{courseClass}/meetings/{meeting}/session/attendances', [AttendanceSessionController::class, 'store'])->name('meetings.session.attendances.store');
+        Route::post('classes/{courseClass}/meetings/{meeting}/session/self', [AttendanceSessionController::class, 'selfCheck'])->name('meetings.session.self');
+        Route::put('classes/{courseClass}/meetings/{meeting}/session/attendances/{attendance}', [AttendanceSessionController::class, 'correct'])->name('meetings.session.attendances.correct');
+
+        Route::get('classes/{courseClass}/attendance-recap', [AttendanceRecapController::class, 'classSummary'])->name('attendance.recap.class');
+        Route::get('classes/{courseClass}/attendance-recap/{student}', [AttendanceRecapController::class, 'studentSummary'])->name('attendance.recap.student');
+
+        // Rekap presensi per semester (Fase 4).
+        Route::get('semesters/attendance-recap', [SemesterAttendanceRecapController::class, 'index'])->name('attendance.recap.semesters');
+        Route::get('semesters/{semester}/attendance-recap', [SemesterAttendanceRecapController::class, 'show'])->name('attendance.recap.semester');
     });
 });
 

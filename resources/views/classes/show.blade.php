@@ -23,6 +23,15 @@
         </div>
     @endif
 
+    @can('view', $courseClass)
+        <div class="mb-4 flex flex-wrap gap-2 text-sm">
+            <a href="{{ route('meetings.index', $courseClass) }}" class="rounded-lg bg-white px-3 py-2 shadow-sm hover:bg-slate-200">Pertemuan ({{ $courseClass->meetings->count() }})</a>
+            @can('viewAttendanceRecap', $courseClass)
+                <a href="{{ route('attendance.recap.class', $courseClass) }}" class="rounded-lg bg-white px-3 py-2 shadow-sm hover:bg-slate-200">Rekap Presensi</a>
+            @endcan
+        </div>
+    @endcan
+
     @can('update', $courseClass)
         <div class="mb-4 flex flex-wrap gap-2 text-sm">
             <a href="{{ route('classes.lecturers.index', $courseClass) }}" class="rounded-lg bg-white px-3 py-2 shadow-sm hover:bg-slate-200">Kelola Dosen ({{ $courseClass->classLecturers->count() }})</a>

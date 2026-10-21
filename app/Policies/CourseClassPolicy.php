@@ -43,6 +43,38 @@ class CourseClassPolicy
         return $this->manage($user);
     }
 
+    /**
+     * Kelola pertemuan & sesi presensi kelas: admin akademik atau dosen pengampu kelas tersebut.
+     */
+    public function manageMeetings(User $user, CourseClass $courseClass): bool
+    {
+        if ($this->manage($user)) {
+            return true;
+        }
+
+        if (! $user->hasRole(UserRole::Lecturer) || ! $user->lecturer) {
+            return false;
+        }
+
+        return $courseClass->classLecturers()->where('lecturer_id', $user->lecturer->id)->exists();
+    }
+
+    /**
+     * Rekap presensi kelas: admin akademik atau dosen pengampu kelas tersebut.
+     */
+    public function viewAttendanceRecap(User $user, CourseClass $courseClass): bool
+    {
+        if ($this->manage($user)) {
+            return true;
+        }
+
+        if (! $user->hasRole(UserRole::Lecturer) || ! $user->lecturer) {
+            return false;
+        }
+
+        return $courseClass->classLecturers()->where('lecturer_id', $user->lecturer->id)->exists();
+    }
+
     public function update(User $user): bool
     {
         return $this->manage($user);

@@ -42,6 +42,14 @@ class CourseClass extends Model
     }
 
     /**
+     * Pertemuan kelas (Fase 4).
+     */
+    public function meetings(): HasMany
+    {
+        return $this->hasMany(Meeting::class);
+    }
+
+    /**
      * Dosen pengampu via pivot.
      */
     public function lecturers(): BelongsToMany

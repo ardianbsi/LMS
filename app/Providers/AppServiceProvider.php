@@ -45,6 +45,9 @@ class AppServiceProvider extends ServiceProvider
         // Area mahasiswa.
         Gate::define('access-student-area', fn (User $user) => $user->hasRole(UserRole::Student));
 
+        // Rekap presensi per semester: admin akademik & dosen.
+        Gate::define('view-semester-attendance-recap', fn (User $user) => $user->hasRole(UserRole::AdminAcademic, UserRole::Lecturer));
+
         // Master data akademik: admin-only via policy.
         Gate::policy(\App\Models\Faculty::class, \App\Policies\MasterDataPolicy::class);
         Gate::policy(\App\Models\StudyProgram::class, \App\Policies\MasterDataPolicy::class);
@@ -57,6 +60,11 @@ class AppServiceProvider extends ServiceProvider
 
         // Kelas & jadwal: admin kelola penuh; dosen/mahasiswa baca kelasnya via policy.
         Gate::policy(\App\Models\CourseClass::class, \App\Policies\CourseClassPolicy::class);
+
+        // Pertemuan & presensi (Fase 4).
+        Gate::policy(\App\Models\Meeting::class, \App\Policies\MeetingPolicy::class);
+        Gate::policy(\App\Models\AttendanceSession::class, \App\Policies\AttendancePolicy::class);
+        Gate::policy(\App\Models\Attendance::class, \App\Policies\AttendancePolicy::class);
     }
 }
 
